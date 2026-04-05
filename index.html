@@ -510,14 +510,14 @@ footer{background:var(--ink);padding:80px 6vw 48px;}
 
 /* ── ADMIN ── */
 #adm-btn{
-  position:fixed;bottom:24px;right:24px;z-index:9990;
-  width:50px;height:50px;background:var(--gold);border:none;
-  border-radius:50%;cursor:pointer;
+  position:fixed;bottom:0;right:0;z-index:9990;
+  width:44px;height:44px;background:transparent;border:none;
+  border-radius:0;cursor:default;
   display:flex;align-items:center;justify-content:center;
-  font-size:18px;box-shadow:0 6px 24px rgba(196,163,90,.35);
-  color:var(--ink);transition:transform .3s;
+  font-size:0;box-shadow:none;color:transparent;
+  opacity:0;pointer-events:all;
+  -webkit-tap-highlight-color:transparent;
 }
-#adm-btn:hover{transform:scale(1.08);}
 #adm{
   position:fixed;top:0;right:-440px;bottom:0;z-index:9980;
   width:440px;background:#111714;
@@ -1167,7 +1167,19 @@ function ytEmbedUrl(raw){
 
 // ── ADMIN ──
 function toggleAdm(){ document.getElementById('adm').classList.toggle('open'); }
+// Secret keyboard shortcut (desktop)
 document.addEventListener('keydown',e=>{ if(e.ctrlKey&&e.shiftKey&&e.key==='A') toggleAdm(); });
+
+// Secret mobile: tap footer logo 5 times fast
+let _tapCount=0, _tapTimer=null;
+document.querySelectorAll('.ft-logo,.nav-logo').forEach(el=>{
+  el.addEventListener('click',e=>{
+    _tapCount++;
+    clearTimeout(_tapTimer);
+    if(_tapCount>=5){ toggleAdm(); _tapCount=0; }
+    _tapTimer=setTimeout(()=>_tapCount=0, 2000);
+  });
+});
 
 const PRESETS = {
   ver:{forest:'#4A7060',sage:'#7B9E87',gold:'#C4A35A',ecru:'#F5F0E8',text:'#181D1A',hero:'#F5F0E8'},
